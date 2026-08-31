@@ -18,13 +18,13 @@ declare(strict_types=1);
 
 namespace GAYA\Hcaptcha\Tests\Functional;
 
+use GAYA\Hcaptcha\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use Symfony\Component\Mailer\SentMessage;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
-use GAYA\Hcaptcha\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use ZBateson\MailMimeParser\Message;
 
 abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
@@ -132,7 +132,7 @@ abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functiona
     protected function getMailSpoolMessages(): array
     {
         $messages = [];
-        foreach (array_filter(glob($this->instancePath . '/' . self::MAIL_SPOOL_FOLDER . '*'), 'is_file') as $path) {
+        foreach (array_filter(glob($this->instancePath . '/' . self::MAIL_SPOOL_FOLDER . '*'), is_file(...)) as $path) {
             $serializedMessage = file_get_contents($path);
             $message = unserialize($serializedMessage);
             if (!($message instanceof SentMessage)) {

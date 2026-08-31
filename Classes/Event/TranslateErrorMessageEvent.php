@@ -23,20 +23,9 @@ namespace GAYA\Hcaptcha\Event;
  */
 final class TranslateErrorMessageEvent
 {
-    /**
-     * @var string
-     */
-    private $errorCode = '';
+    private string $message = '';
 
-    /**
-     * @var string
-     */
-    private $message = '';
-
-    public function __construct(string $errorCode)
-    {
-        $this->errorCode = $errorCode;
-    }
+    public function __construct(private readonly string $errorCode) {}
 
     public function getErrorCode(): string
     {

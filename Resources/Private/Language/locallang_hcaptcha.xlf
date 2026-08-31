@@ -6,6 +6,9 @@
             <trans-unit id="hcaptcha.formEditor.element.label">
                 <source>hCaptcha</source>
             </trans-unit>
+	        <trans-unit id="hcaptcha.formEditor.element.description">
+		        <source>Add a captcha field using hCaptcha service</source>
+	        </trans-unit>
             <trans-unit id="hcaptcha.formEditor.stage.validation_label">
                 <source>hCaptcha validation is active</source>
             </trans-unit>

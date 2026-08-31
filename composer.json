@@ -7,6 +7,7 @@
     "support": {
         "issues": "https://github.com/agence-gaya/typo3-hcaptcha/issues"
     },
+	"version": "2.3.0",
     "authors": [
         {
             "name": "waldhacker",
@@ -30,29 +31,27 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.2 | ^8.0 | ^8.1 | ^8.2 | ^8.3",
         "ext-json": "*",
-        "typo3/cms-extbase": "^10.4@dev || ^11.5@dev || ^12.4@dev || ^13.4@dev",
-        "typo3/cms-fluid": "^10.4@dev || ^11.5@dev || ^12.4@dev || ^13.4@dev",
-        "typo3/cms-form": "^10.4@dev || ^11.5@dev || ^12.4@dev || ^13.4@dev"
+        "typo3/cms-extbase": "^14.3",
+        "typo3/cms-fluid": "^14.3",
+        "typo3/cms-form": "^14.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16 | ^3.13",
-        "overtrue/phplint": "^2.0 | ^5.3 | ^9.1",
-        "phpspec/prophecy-phpunit": "^2.0",
-        "phpstan/extension-installer": "^1.0",
-        "phpunit/phpunit": "^9.4 || ^10.5",
-        "roave/security-advisories": "dev-latest",
-        "saschaegerer/phpstan-typo3": "^1.8",
-        "typo3/cms-fluid-styled-content": "^10.4@dev || ^11.5@dev || ^12.4@dev || ^13.4@dev",
-        "typo3/coding-standards": "^0.3 | ^0.5",
-        "typo3/cms-install": "^10.4@dev || ^11.5@dev || ^12.4@dev || ^13.4@dev",
-        "typo3/testing-framework": "^7.x-dev || ^8",
-        "vimeo/psalm": "^3.0 | ^4.0 | ^5.0 | ^6.0",
-        "zbateson/mail-mime-parser": "^2.0"
+        "friendsofphp/php-cs-fixer": "^3.94",
+        "overtrue/phplint": "^9.7",
+        "typo3/testing-framework": "^9.3",
+        "phpstan/extension-installer": "^1.4",
+        "saschaegerer/phpstan-typo3": "^3.1",
+        "typo3/cms-fluid-styled-content": "^14.3",
+        "typo3/cms-install": "^14.3",
+        "typo3/coding-standards": "^0.9",
+        "vimeo/psalm": "^7.0",
+        "zbateson/mail-mime-parser": "^4.0",
+		"helmich/typo3-typoscript-lint": "^3.3",
+		"phpspec/prophecy-phpunit": "^2.5"
     },
     "suggest": {
-        "vlucas/phpdotenv": "^2.4"
+        "helhum/dotenv-connector": "^3.0"
     },
     "autoload": {
         "psr-4": {
@@ -80,7 +79,7 @@
     },
     "scripts": {
         "post-autoload-dump": [
-            "mkdir -p .build/web/typo3conf/ext/", "[ -L .build/web/typo3conf/ext/hcaptcha ] || ln -snvf ../../../../. .build/web/typo3conf/ext/hcaptcha"
+            "mkdir -p .build/packages/", "[ -L .build/packages/hcaptcha ] || ln -snvf ../../. .build/packages/hcaptcha"
         ],
         "ci:lint:php": [
             "phplint -c build/phplint.yaml"
@@ -95,7 +94,7 @@
             "phpstan analyze --configuration build/phpstan.neon"
         ],
         "ci:stan:gen-baseline": [
-            "phpstan analyze --configuration build/phpstan.neon --generate-baseline build/phpstan.baseline.neon"
+            "phpstan analyze --configuration build/phpstan.neon --generate-baseline build/phpstan.baseline.neon --allow-empty-baseline"
         ],
         "ci:psalm": [
             "psalm --config=build/psalm.xml --php-version=$(php -r 'echo phpversion();')"
@@ -104,10 +103,10 @@
             "psalm --config=build/psalm.xml --php-version=$(php -r 'echo phpversion();') --set-baseline=build/psalm-baseline.xml"
         ],
         "ci:cgl:check": [
-            "php-cs-fixer fix --config build/phpcs.dist -v --dry-run"
+            "php-cs-fixer fix --config build/php-cs-fixer.php -v --dry-run"
         ],
         "ci:cgl:fix": [
-            "php-cs-fixer fix --config build/phpcs.dist"
+            "php-cs-fixer fix --config build/php-cs-fixer.php"
         ],
         "ci:tests:unit:cover": [
             "mkdir -p .build/logs",
@@ -123,7 +122,6 @@
     "extra": {
         "typo3/cms": {
             "extension-key": "hcaptcha",
-            "cms-package-dir": "{$vendor-dir}/typo3/cms",
             "web-dir": ".build/web"
         }
     }

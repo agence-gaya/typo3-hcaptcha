@@ -23,36 +23,12 @@ use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 
 /**
- * Test case for frontend requests without having site handling configured
+ * Test case for frontend requests without having site handling configured.
  */
 class PhpError implements PageErrorHandlerInterface
 {
-    /**
-     * @var int
-     */
-    private $statusCode;
+    public function __construct(private readonly int $statusCode) {}
 
-    /**
-     * @var array
-     */
-    private $configuration;
-
-    /**
-     * @param int $statusCode
-     * @param array $configuration
-     */
-    public function __construct(int $statusCode, array $configuration)
-    {
-        $this->statusCode = $statusCode;
-        $this->configuration = $configuration;
-    }
-
-    /**
-     * @param ServerRequestInterface $request
-     * @param string $message
-     * @param array $reasons
-     * @return ResponseInterface
-     */
     public function handlePageError(
         ServerRequestInterface $request,
         string $message,

@@ -18,39 +18,33 @@ declare(strict_types=1);
 
 namespace GAYA\Hcaptcha\Service;
 
+use GAYA\Hcaptcha\Exception\MissingKeyException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use GAYA\Hcaptcha\Exception\MissingKeyException;
 
 class ConfigurationService
 {
-    /**
-     * @var array|null
-     */
-    private $settings;
+    private array $settings;
 
     public function __construct(ConfigurationManager $configurationManager)
     {
-        if ($this->settings === null) {
-            $this->settings = $configurationManager->getConfiguration(
-                ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
-                'hcaptcha'
-            );
-        }
+        $this->settings = $configurationManager->getConfiguration(
+            ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+            'hcaptcha'
+        );
     }
 
     /**
-     * @return string
      * @throws MissingKeyException
      */
     public function getPublicKey(): string
     {
-        $publicKey = !empty($this->settings['publicKey'])
-            ? $this->settings['publicKey']
-            : \getenv('HCAPTCHA_PUBLIC_KEY');
+        $publicKey = empty($this->settings['publicKey'])
+            ? getenv('HCAPTCHA_PUBLIC_KEY')
+            : $this->settings['publicKey'];
 
         if (empty($publicKey)) {
             throw new MissingKeyException(
@@ -59,18 +53,24 @@ class ConfigurationService
             );
         }
 
+        if (!is_string($publicKey)) {
+            throw new MissingKeyException(
+                'hCaptcha public key not a string',
+                1788214942
+            );
+        }
+
         return $publicKey;
     }
 
     /**
-     * @return string
      * @throws MissingKeyException
      */
     public function getPrivateKey(): string
     {
-        $privateKey = !empty($this->settings['privateKey'])
-            ? $this->settings['privateKey']
-            : \getenv('HCAPTCHA_PRIVATE_KEY');
+        $privateKey = empty($this->settings['privateKey'])
+            ? getenv('HCAPTCHA_PRIVATE_KEY')
+            : $this->settings['privateKey'];
 
         if (empty($privateKey)) {
             throw new MissingKeyException(
@@ -79,18 +79,24 @@ class ConfigurationService
             );
         }
 
+        if (!is_string($privateKey)) {
+            throw new MissingKeyException(
+                'hCaptcha private key not a string',
+                1788214943
+            );
+        }
+
         return $privateKey;
     }
 
     /**
-     * @return string
      * @throws MissingKeyException
      */
     public function getVerificationServer(): string
     {
-        $verificationServer = !empty($this->settings['verificationServer'])
-            ? $this->settings['verificationServer']
-            : \getenv('HCAPTCHA_VERIFICATION_SERVER');
+        $verificationServer = empty($this->settings['verificationServer'])
+            ? getenv('HCAPTCHA_VERIFICATION_SERVER')
+            : $this->settings['verificationServer'];
 
         if (empty($verificationServer)) {
             throw new MissingKeyException(
@@ -99,22 +105,36 @@ class ConfigurationService
             );
         }
 
+        if (!is_string($verificationServer)) {
+            throw new MissingKeyException(
+                'hCaptcha verification server address key not a string',
+                1788214944
+            );
+        }
+
         return $verificationServer;
     }
 
     /**
-     * @return string
      * @throws MissingKeyException
      */
     public function getApiScript(): string
     {
-        $apiScript = !empty($this->settings['apiScript'])
-            ? $this->settings['apiScript']
-            : \getenv('HCAPTCHA_API_SCRIPT');
+        $apiScript = empty($this->settings['apiScript'])
+            ? getenv('HCAPTCHA_API_SCRIPT')
+            : $this->settings['apiScript'];
+
         if (empty($apiScript)) {
             throw new MissingKeyException(
                 'hCaptcha api script not defined',
                 1603034329
+            );
+        }
+
+        if (!is_string($apiScript)) {
+            throw new MissingKeyException(
+                'hCaptcha api script not a string',
+                1788214945
             );
         }
 
@@ -126,9 +146,10 @@ class ConfigurationService
         // @codeCoverageIgnoreStart
         try {
             $uri = new Uri($apiScript);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return $apiScript;
         }
+
         // @codeCoverageIgnoreEnd
 
         parse_str($uri->getQuery(), $apiScriptQueryParts);
@@ -144,6 +165,7 @@ class ConfigurationService
         if (!$siteLanguage instanceof SiteLanguage) {
             return $apiScript;
         }
+
         // @codeCoverageIgnoreEnd
 
         if (method_exists($siteLanguage, 'getTwoLetterIsoCode')) {
@@ -165,6 +187,7 @@ class ConfigurationService
         if (!($request instanceof ServerRequestInterface)) {
             throw new \InvalidArgumentException(sprintf('Request must implement "%s"', ServerRequestInterface::class), 1674637738);
         }
+
         // @codeCoverageIgnoreEnd
 
         return $request;

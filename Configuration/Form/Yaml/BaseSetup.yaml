@@ -31,6 +31,7 @@ TYPO3:
                   condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
               formEditor:
                 label: 'hcaptcha.formEditor.element.label'
+                description: 'hcaptcha.formEditor.element.description'
                 group: custom
                 groupSorting: 700
                 iconIdentifier: 'hcaptcha'

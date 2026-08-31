@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace GAYA\Hcaptcha\Validation;
 
+use GAYA\Hcaptcha\Event\TranslateErrorMessageEvent;
+use GAYA\Hcaptcha\Service\ConfigurationService;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -25,33 +27,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
-use GAYA\Hcaptcha\Event\TranslateErrorMessageEvent;
-use GAYA\Hcaptcha\Service\ConfigurationService;
 
 class HcaptchaValidator extends AbstractValidator
 {
     protected $acceptsEmptyValues = false;
 
-    /**
-     * @var ConfigurationService|null
-     */
-    private $configurationService;
+    private ?ConfigurationService $configurationService = null;
+
+    private ?RequestFactory $requestFactory = null;
+
+    public function __construct(private readonly EventDispatcher $eventDispatcher) {}
 
     /**
-     * @var RequestFactory|null
-     */
-    private $requestFactory;
-
-    /**
-     * Validate the captcha value from the request and add an error if not valid
+     * Validate the captcha value from the request and add an error if not valid.
      *
      * @param mixed $value The value
      */
-    protected function isValid($value): void
+    protected function isValid(mixed $value): void
     {
         $response = $this->validateHcaptcha();
 
-        if (empty($response) || (bool)($response['success'] ?? false) === false) {
+        if ($response === [] || (bool)($response['success'] ?? false) === false) {
             if (empty($response['error-codes'])) {
                 $this->addError(
                     $this->translateErrorMessage(
@@ -61,7 +57,8 @@ class HcaptchaValidator extends AbstractValidator
                     1637268462
                 );
             } else {
-                foreach ($response['error-codes'] as $errorCode) {
+                foreach ((array)$response['error-codes'] as $errorCode) {
+                    assert(is_string($errorCode));
                     $this->addError(
                         $this->translateErrorMessage(
                             'error_hcaptcha_' . $errorCode,
@@ -74,9 +71,6 @@ class HcaptchaValidator extends AbstractValidator
         }
     }
 
-    /**
-     * @return array
-     */
     private function validateHcaptcha(): array
     {
         /** @var ServerRequestInterface $request */
@@ -97,7 +91,7 @@ class HcaptchaValidator extends AbstractValidator
         $url = HttpUtility::buildUrl(
             [
                 'host' => $this->getConfigurationService()->getVerificationServer(),
-                'query' => \http_build_query(
+                'query' => http_build_query(
                     [
                         'secret' => $this->getConfigurationService()->getPrivateKey(),
                         'response' => $hcaptchaFormFieldValue,
@@ -120,10 +114,10 @@ class HcaptchaValidator extends AbstractValidator
     protected function translateErrorMessage(string $translateKey, string $extensionName = '', array $arguments = []): string
     {
         $event = new TranslateErrorMessageEvent($translateKey);
-        GeneralUtility::makeInstance(EventDispatcher::class)->dispatch($event);
+        $this->eventDispatcher->dispatch($event);
 
         $message = $event->getMessage();
-        if (!empty($message)) {
+        if ($message !== '' && $message !== '0') {
             return $message;
         }
 
@@ -137,20 +131,18 @@ class HcaptchaValidator extends AbstractValidator
     private function getConfigurationService(): ConfigurationService
     {
         if (!($this->configurationService instanceof ConfigurationService)) {
-            /** @var ConfigurationService $configurationService */
-            $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-            $this->configurationService = $configurationService;
+            $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         }
+
         return $this->configurationService;
     }
 
     private function getRequestFactory(): RequestFactory
     {
         if (!($this->requestFactory instanceof RequestFactory)) {
-            /** @var RequestFactory $requestFactory */
-            $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
-            $this->requestFactory = $requestFactory;
+            $this->requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
         }
+
         return $this->requestFactory;
     }
 }

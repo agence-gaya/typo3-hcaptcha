@@ -24,10 +24,15 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 class DataPusher
 {
     private $formData = [];
+
     private $with = [];
+
     private $withNoPrefix = [];
+
     private $without = [];
+
     private $withoutNoPrefix = [];
+
     private $withChash = true;
 
     public function __construct(DataExtractor $dataExtractor, string $query = '//form')
@@ -35,31 +40,31 @@ class DataPusher
         $this->formData = $dataExtractor->getFormData($query);
     }
 
-    public function with(string $identifier, string $value): DataPusher
+    public function with(string $identifier, string $value): self
     {
         $this->with[$identifier] = $value;
         return $this;
     }
 
-    public function withNoPrefix(string $identifier, string $value): DataPusher
+    public function withNoPrefix(string $identifier, string $value): self
     {
         $this->withNoPrefix[$identifier] = $value;
         return $this;
     }
 
-    public function without(string $identifier): DataPusher
+    public function without(string $identifier): self
     {
         $this->without[$identifier] = $identifier;
         return $this;
     }
 
-    public function withoutNoPrefix(string $identifier): DataPusher
+    public function withoutNoPrefix(string $identifier): self
     {
         $this->withoutNoPrefix[$identifier] = $identifier;
         return $this;
     }
 
-    public function withChash(bool $withChash): DataPusher
+    public function withChash(bool $withChash): self
     {
         $this->withChash = $withChash;
         return $this;
@@ -83,6 +88,7 @@ class DataPusher
         if ($this->withChash === false) {
             unset($actionData['cHash']);
         }
+
         $actionQuery = http_build_query($actionData);
 
         foreach (explode('&', urldecode($actionQuery)) as $queryPart) {
@@ -105,7 +111,7 @@ class DataPusher
 
             if ($this->strEndsWith($elementData['name'], '[__state]')) {
                 $prefix = key(ArrayUtility::flatten($nameStruct));
-                $prefixItems = explode('.', $prefix);
+                $prefixItems = explode('.', (string)$prefix);
                 array_pop($prefixItems);
                 $dataPrefix = implode('.', $prefixItems) . '.';
             }

@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\InstructionInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
@@ -33,12 +34,9 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
  */
 trait SiteBasedTestTrait
 {
-    /**
-     * @param array $items
-     */
     protected static function failIfArrayIsNotEmpty(array $items): void
     {
-        if (empty($items)) {
+        if ($items === []) {
             return;
         }
 
@@ -48,12 +46,6 @@ trait SiteBasedTestTrait
         );
     }
 
-    /**
-     * @param string $identifier
-     * @param array $site
-     * @param array $languages
-     * @param array $errorHandling
-     */
     protected function writeSiteConfiguration(
         string $identifier,
         array $site = [],
@@ -61,10 +53,11 @@ trait SiteBasedTestTrait
         array $errorHandling = []
     ): void {
         $configuration = $site;
-        if (!empty($languages)) {
+        if ($languages !== []) {
             $configuration['languages'] = $languages;
         }
-        if (!empty($errorHandling)) {
+
+        if ($errorHandling !== []) {
             $configuration['errorHandling'] = $errorHandling;
         }
 
@@ -77,11 +70,6 @@ trait SiteBasedTestTrait
         }
     }
 
-    /**
-     * @param int $rootPageId
-     * @param string $base
-     * @return array
-     */
     protected function buildSiteConfiguration(
         int $rootPageId,
         string $base = ''
@@ -92,11 +80,6 @@ trait SiteBasedTestTrait
         ];
     }
 
-    /**
-     * @param string $identifier
-     * @param string $base
-     * @return array
-     */
     protected function buildDefaultLanguageConfiguration(
         string $identifier,
         string $base
@@ -108,18 +91,11 @@ trait SiteBasedTestTrait
         return $configuration;
     }
 
-    /**
-     * @param string $identifier
-     * @param string $base
-     * @param array $fallbackIdentifiers
-     * @param string $fallbackType
-     * @return array
-     */
     protected function buildLanguageConfiguration(
         string $identifier,
         string $base,
         array $fallbackIdentifiers = [],
-        string $fallbackType = null
+        ?string $fallbackType = null
     ): array {
         $preset = $this->resolveLanguagePreset($identifier);
 
@@ -134,10 +110,10 @@ trait SiteBasedTestTrait
             'direction' => $preset['direction'] ?? '',
             'typo3Language' => $preset['iso'] ?? '',
             'flag' => $preset['iso'] ?? '',
-            'fallbackType' => $fallbackType ?? (empty($fallbackIdentifiers) ? 'strict' : 'fallback'),
+            'fallbackType' => $fallbackType ?? ($fallbackIdentifiers === [] ? 'strict' : 'fallback'),
         ];
 
-        if (!empty($fallbackIdentifiers)) {
+        if ($fallbackIdentifiers !== []) {
             $fallbackIds = array_map(
                 function (string $fallbackIdentifier) {
                     $preset = $this->resolveLanguagePreset($fallbackIdentifier);
@@ -152,11 +128,6 @@ trait SiteBasedTestTrait
         return $configuration;
     }
 
-    /**
-     * @param string $handler
-     * @param array $codes
-     * @return array
-     */
     protected function buildErrorHandlingConfiguration(
         string $handler,
         array $codes
@@ -204,7 +175,6 @@ trait SiteBasedTestTrait
     }
 
     /**
-     * @param string $identifier
      * @return mixed
      */
     protected function resolveLanguagePreset(string $identifier)
@@ -215,14 +185,11 @@ trait SiteBasedTestTrait
                 1533893665
             );
         }
+
         return static::LANGUAGE_PRESETS[$identifier];
     }
 
     /**
-     * @param InternalRequest $request
-     * @param AbstractInstruction ...$instructions
-     * @return InternalRequest
-     *
      * @todo Instruction handling should be part of Testing Framework (multiple instructions per identifier, merge in interface)
      */
     protected function applyInstructions(InternalRequest $request, AbstractInstruction ...$instructions): InternalRequest
@@ -231,7 +198,7 @@ trait SiteBasedTestTrait
 
         foreach ($instructions as $instruction) {
             $identifier = $instruction->getIdentifier();
-            if (isset($modifiedInstructions[$identifier]) || $request->getInstruction($identifier) !== null) {
+            if (isset($modifiedInstructions[$identifier]) || $request->getInstruction($identifier) instanceof InstructionInterface) {
                 $modifiedInstructions[$identifier] = $this->mergeInstruction(
                     $modifiedInstructions[$identifier] ?? $request->getInstruction($identifier),
                     $instruction
@@ -244,19 +211,14 @@ trait SiteBasedTestTrait
         return $request->withInstructions($modifiedInstructions);
     }
 
-    /**
-     * @param AbstractInstruction $current
-     * @param AbstractInstruction $other
-     * @return AbstractInstruction
-     */
     protected function mergeInstruction(AbstractInstruction $current, AbstractInstruction $other): AbstractInstruction
     {
-        if (get_class($current) !== get_class($other)) {
+        if ($current::class !== $other::class) {
             throw new \LogicException('Cannot merge different instruction types', 1565863174);
         }
 
         if ($current instanceof TypoScriptInstruction) {
-            /** @var $other TypoScriptInstruction */
+            /** @var TypoScriptInstruction $other */
             $typoScript = array_replace_recursive(
                 $current->getTypoScript() ?? [],
                 $other->getTypoScript() ?? []
@@ -268,14 +230,16 @@ trait SiteBasedTestTrait
             if ($typoScript !== []) {
                 $current = $current->withTypoScript($typoScript);
             }
+
             if ($constants !== []) {
                 $current = $current->withConstants($constants);
             }
+
             return $current;
         }
 
         if ($current instanceof ArrayValueInstruction) {
-            /** @var $other ArrayValueInstruction */
+            /** @var ArrayValueInstruction $other */
             $array = array_merge_recursive($current->getArray(), $other->getArray());
             return $current->withArray($array);
         }

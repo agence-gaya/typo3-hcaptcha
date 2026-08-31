@@ -18,6 +18,11 @@ declare(strict_types=1);
 
 namespace GAYA\Hcaptcha\Tests\Unit\Service;
 
+use GAYA\Hcaptcha\Exception\MissingKeyException;
+use GAYA\Hcaptcha\Service\ConfigurationService;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -26,12 +31,15 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use GAYA\Hcaptcha\Exception\MissingKeyException;
-use GAYA\Hcaptcha\Service\ConfigurationService;
 
-/**
- * @coversDefaultClass \GAYA\Hcaptcha\Service\ConfigurationService
- */
+#[CoversClass(ConfigurationService::class)]
+#[CoversMethod(ConfigurationService::class, '__construct')]
+#[CoversMethod(ConfigurationService::class, 'getPublicKey')]
+#[CoversMethod(ConfigurationService::class, 'getPrivateKey')]
+#[CoversMethod(ConfigurationService::class, 'getVerificationServer')]
+#[CoversMethod(ConfigurationService::class, 'getApiScript')]
+#[CoversMethod(ConfigurationService::class, 'appendSiteLanguage')]
+#[CoversMethod(ConfigurationService::class, 'getServerRequest')]
 class ConfigurationServiceTest extends TestCase
 {
     use ProphecyTrait;
@@ -45,14 +53,10 @@ class ConfigurationServiceTest extends TestCase
     {
         parent::setUp();
         $this->configurationManager = $this->prophesize(ConfigurationManager::class);
-        $this->configurationManager->getConfiguration(Argument::cetera())->willReturn([]);
+        $this->configurationManager->getConfiguration((string)Argument::cetera())->willReturn([]);
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getPublicKey
-     */
+    #[Test]
     public function getPublicKeyThrowsExceptionIfKeyNotSet(): void
     {
         putenv('HCAPTCHA_PUBLIC_KEY');
@@ -62,11 +66,7 @@ class ConfigurationServiceTest extends TestCase
         $subject->getPublicKey();
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getPublicKey
-     */
+    #[Test]
     public function getPublicKeyReturnsKeyFromSettings(): void
     {
         $expectedKey = 'my_superb_key';
@@ -80,11 +80,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame($expectedKey, $publicKey);
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getPublicKey
-     */
+    #[Test]
     public function getPublicKeyReturnsKeyFromEnv(): void
     {
         $expectedKey = 'my_superb_key';
@@ -96,11 +92,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame($expectedKey, $publicKey);
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getPrivateKey
-     */
+    #[Test]
     public function getPrivateKeyThrowsExceptionIfKeyNotSet(): void
     {
         $this->expectException(MissingKeyException::class);
@@ -108,11 +100,7 @@ class ConfigurationServiceTest extends TestCase
         $subject->getPrivateKey();
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getPrivateKey
-     */
+    #[Test]
     public function getPrivateKeyReturnsKeyFromSettings(): void
     {
         $expectedKey = 'my_superb_key';
@@ -126,11 +114,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame($expectedKey, $privateKey);
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getPrivateKey
-     */
+    #[Test]
     public function getPrivateKeyReturnsKeyFromEnv(): void
     {
         $expectedKey = 'my_superb_key';
@@ -142,11 +126,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame($expectedKey, $privateKey);
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getVerificationServer
-     */
+    #[Test]
     public function getVerificationServerThrowsExceptionIfKeyNotSet(): void
     {
         $this->expectException(MissingKeyException::class);
@@ -154,11 +134,7 @@ class ConfigurationServiceTest extends TestCase
         $subject->getVerificationServer();
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getVerificationServer
-     */
+    #[Test]
     public function getVerificationServerReturnsKeyFromSettings(): void
     {
         $expectedServer = 'https://example.com';
@@ -172,11 +148,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame($expectedServer, $verificationServer);
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getVerificationServer
-     */
+    #[Test]
     public function getVerificationServerReturnsKeyFromEnv(): void
     {
         $expectedServer = 'https://example.com';
@@ -187,11 +159,8 @@ class ConfigurationServiceTest extends TestCase
 
         self::assertSame($expectedServer, $verificationServer);
     }
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getApiScript
-     */
+
+    #[Test]
     public function getApiScriptThrowsExceptionIfKeyNotSet(): void
     {
         $this->expectException(MissingKeyException::class);
@@ -199,13 +168,7 @@ class ConfigurationServiceTest extends TestCase
         $subject->getApiScript();
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getApiScript
-     * @covers ::appendSiteLanguage
-     * @covers ::getServerRequest
-     */
+    #[Test]
     public function getApiScriptReturnsKeyFromSettingsWithLanguage(): void
     {
         $expectedScript = 'https://hcaptcha.com/1/api.js';
@@ -233,12 +196,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame($expectedScript . '?hl=en', $apiScript);
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getApiScript
-     * @covers ::appendSiteLanguage
-     */
+    #[Test]
     public function getApiScriptReturnsKeyFromSettingsWithoutLanguage(): void
     {
         $expectedScript = 'https://hcaptcha.com/1/api.js?hl=de';
@@ -252,13 +210,7 @@ class ConfigurationServiceTest extends TestCase
         self::assertSame($expectedScript, $apiScript);
     }
 
-    /**
-     * @test
-     * @covers ::__construct
-     * @covers ::getApiScript
-     * @covers ::appendSiteLanguage
-     * @covers ::getServerRequest
-     */
+    #[Test]
     public function getApiScriptReturnsKeyFromEnv(): void
     {
         $expectedScript = 'https://hcaptcha.com/1/api.js';

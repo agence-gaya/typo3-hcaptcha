@@ -20,12 +20,7 @@ namespace GAYA\Hcaptcha\Tests\Functional\Form;
 
 class DataExtractor
 {
-    private $html;
-
-    public function __construct(string $html)
-    {
-        $this->html = $html;
-    }
+    public function __construct(private readonly string $html) {}
 
     public function getFormData(string $query = '//form'): array
     {

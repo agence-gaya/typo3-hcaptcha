@@ -18,7 +18,14 @@ declare(strict_types=1);
 
 namespace GAYA\Hcaptcha\Tests\Unit\Validation;
 
+use GAYA\Hcaptcha\Service\ConfigurationService;
+use GAYA\Hcaptcha\Validation\HcaptchaValidator;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -27,19 +34,21 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use GAYA\Hcaptcha\Service\ConfigurationService;
-use GAYA\Hcaptcha\Validation\HcaptchaValidator;
 
-/**
- * @backupGlobals enabled
- * @coversDefaultClass \GAYA\Hcaptcha\Validation\HcaptchaValidator
- */
+#[CoversClass(HcaptchaValidator::class)]
+#[CoversMethod(HcaptchaValidator::class, '__construct')]
+#[CoversMethod(HcaptchaValidator::class, 'isValid')]
+#[CoversMethod(HcaptchaValidator::class, 'validate')]
+#[CoversMethod(HcaptchaValidator::class, 'validateHcaptcha')]
+#[CoversMethod(HcaptchaValidator::class, 'getConfigurationService')]
+#[CoversMethod(HcaptchaValidator::class, 'getRequestFactory')]
+#[BackupGlobals(true)]
 class HcaptchaValidatorTest extends TestCase
 {
     use ProphecyTrait;
 
     /**
-     * @var ServerRequestInterface|ObjectProphecy
+     * @var ObjectProphecy|ServerRequestInterface
      */
     private $typo3request;
 
@@ -56,12 +65,7 @@ class HcaptchaValidatorTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     * @covers ::validate
-     * @covers ::isValid
-     * @covers ::validateHcaptcha
-     */
+    #[Test]
     public function validateReturnsErrorIfPostResponseFieldIsEmpty(): void
     {
         $subject = $this->getMockBuilder(HcaptchaValidator::class)
@@ -106,15 +110,8 @@ class HcaptchaValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validateReturnsErrorIfVerificationRequestReturnsErrorDataProvider
-     * @covers ::validate
-     * @covers ::isValid
-     * @covers ::validateHcaptcha
-     * @covers ::getConfigurationService
-     * @covers ::getRequestFactory
-     */
+    #[Test]
+    #[DataProvider('validateReturnsErrorIfVerificationRequestReturnsErrorDataProvider')]
     public function validateReturnsErrorIfVerificationRequestReturnsError(
         array $responseData,
         int $expectedErrorCode
@@ -138,7 +135,7 @@ class HcaptchaValidatorTest extends TestCase
         $configurationService->getVerificationServer()->willReturn('https://example.com/siteverify');
         $configurationService->getPrivateKey()->willReturn('my_superb_key');
 
-        $requestFactory->request(Argument::cetera())->willReturn(
+        $requestFactory->request((string)Argument::cetera())->willReturn(
             new Response(200, [], json_encode($responseData))
         );
 

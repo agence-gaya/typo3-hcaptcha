@@ -20,6 +20,4 @@ namespace GAYA\Hcaptcha\Exception;
 
 use TYPO3\CMS\Core\Exception;
 
-class MissingKeyException extends Exception
-{
-}
+class MissingKeyException extends Exception {}

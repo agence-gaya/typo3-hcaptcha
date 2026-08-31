@@ -18,43 +18,28 @@ declare(strict_types=1);
 
 namespace GAYA\Hcaptcha\ViewHelpers\Forms;
 
+use GAYA\Hcaptcha\Service\ConfigurationService;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-use GAYA\Hcaptcha\Service\ConfigurationService;
 
 /**
  * @codeCoverageIgnore maybe test with an acceptance test at a later point
  */
 class HcaptchaViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     protected $escapeOutput = false;
 
-    /**
-     * @var ConfigurationService
-     */
-    private $configurationService;
+    public function __construct(private readonly ConfigurationService $configurationService, private readonly AssetCollector $assetCollector) {}
 
-    /**
-     * @var AssetCollector
-     */
-    private $assetCollector;
-
-    public function __construct(ConfigurationService $configurationService, AssetCollector $assetCollector)
-    {
-        $this->configurationService = $configurationService;
-        $this->assetCollector = $assetCollector;
-    }
-
-    /**
-     * @return string
-     */
     public function render(): string
     {
+        if (!$this->renderingContext instanceof RenderingContextInterface) {
+            return '';
+        }
+
         /** @var FormRuntime|null $formRuntime */
         $formRuntime = $this->renderingContext
             ->getViewHelperVariableContainer()

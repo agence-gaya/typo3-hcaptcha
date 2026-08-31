@@ -18,9 +18,11 @@ declare(strict_types=1);
 
 namespace GAYA\Hcaptcha\Tests\Functional;
 
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use GAYA\Hcaptcha\Tests\Functional\Form\DataExtractor;
 use GAYA\Hcaptcha\Tests\Functional\Form\DataPusher;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 class HcaptchaValidationTest extends FunctionalTestCase
 {
@@ -95,10 +97,8 @@ class HcaptchaValidationTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validationFailsOnMultiStepFormIfHcaptchaParametersAreMissingDataProvider
-     */
+    #[Test]
+    #[DataProvider('validationFailsOnMultiStepFormIfHcaptchaParametersAreMissingDataProvider')]
     public function validationFailsOnMultiStepFormIfHcaptchaParametersAreMissing(
         array $formData,
         array $formDataNoPrefix,
@@ -114,12 +114,15 @@ class HcaptchaValidationTest extends FunctionalTestCase
         foreach ($formData as $identifier => $value) {
             $dataPusher->with($identifier, $value);
         }
+
         foreach ($formDataNoPrefix as $identifier => $value) {
             $dataPusher->withNoPrefix($identifier, $value);
         }
+
         foreach ($removeFormData as $identifier) {
             $dataPusher->without($identifier);
         }
+
         foreach ($removeFormDataNoPrefix as $identifier) {
             $dataPusher->withoutNoPrefix($identifier);
         }
@@ -129,7 +132,8 @@ class HcaptchaValidationTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest($formPostRequest, $this->internalRequestContext, true);
         $pageMarkup = (string)$response->getBody();
 
-        $formData = (new DataExtractor($pageMarkup))->getFormData();
+        $dataExtractor = new DataExtractor($pageMarkup);
+        $formData = $dataExtractor->getFormData();
         $elementData = $formData['elementData'];
 
         self::assertEquals(1, (int)$elementData['tx_form_formframework[multistep-test-form-1][__currentPage]']['value']);
@@ -175,10 +179,8 @@ class HcaptchaValidationTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validationFailsOnMultiStepFormIfHcaptchaParametersAreInvalidDataProvider
-     */
+    #[Test]
+    #[DataProvider('validationFailsOnMultiStepFormIfHcaptchaParametersAreInvalidDataProvider')]
     public function validationFailsOnMultiStepFormIfHcaptchaParametersAreInvalid(
         array $formData,
         array $formDataNoPrefix,
@@ -195,12 +197,15 @@ class HcaptchaValidationTest extends FunctionalTestCase
         foreach ($formData as $identifier => $value) {
             $dataPusher->with($identifier, $value);
         }
+
         foreach ($formDataNoPrefix as $identifier => $value) {
             $dataPusher->withNoPrefix($identifier, $value);
         }
+
         foreach ($removeFormData as $identifier) {
             $dataPusher->without($identifier);
         }
+
         foreach ($removeFormDataNoPrefix as $identifier) {
             $dataPusher->withoutNoPrefix($identifier);
         }
@@ -210,7 +215,8 @@ class HcaptchaValidationTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest($formPostRequest, $this->internalRequestContext, true);
         $pageMarkup = (string)$response->getBody();
 
-        $formData = (new DataExtractor($pageMarkup))->getFormData();
+        $dataExtractor = new DataExtractor($pageMarkup);
+        $formData = $dataExtractor->getFormData();
         $elementData = $formData['elementData'];
 
         self::assertEquals(1, (int)$elementData['tx_form_formframework[multistep-test-form-1][__currentPage]']['value']);
@@ -223,9 +229,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
         self::assertCount(0, $this->getMailSpoolMessages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validationSuccessfulOnMultiStepFormIfHcaptchaParametersAreValid(): void
     {
         $uri = self::ROOT_PAGE_BASE_URI . '/multistep-test-form';
@@ -245,7 +249,8 @@ class HcaptchaValidationTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest($formPostRequest, $this->internalRequestContext, true);
         $pageMarkup = (string)$response->getBody();
 
-        $formData = (new DataExtractor($pageMarkup))->getFormData();
+        $dataExtractor = new DataExtractor($pageMarkup);
+        $formData = $dataExtractor->getFormData();
         $elementData = $formData['elementData'];
 
         self::assertEquals(2, (int)$elementData['tx_form_formframework[multistep-test-form-1][__currentPage]']['value']);
@@ -325,10 +330,8 @@ class HcaptchaValidationTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validationFailsOnSingleStepFormIfHcaptchaParametersAreMissingDataProvider
-     */
+    #[Test]
+    #[DataProvider('validationFailsOnSingleStepFormIfHcaptchaParametersAreMissingDataProvider')]
     public function validationFailsOnSingleStepFormIfHcaptchaParametersAreMissing(
         array $formData,
         array $formDataNoPrefix,
@@ -344,12 +347,15 @@ class HcaptchaValidationTest extends FunctionalTestCase
         foreach ($formData as $identifier => $value) {
             $dataPusher->with($identifier, $value);
         }
+
         foreach ($formDataNoPrefix as $identifier => $value) {
             $dataPusher->withNoPrefix($identifier, $value);
         }
+
         foreach ($removeFormData as $identifier) {
             $dataPusher->without($identifier);
         }
+
         foreach ($removeFormDataNoPrefix as $identifier) {
             $dataPusher->withoutNoPrefix($identifier);
         }
@@ -359,7 +365,8 @@ class HcaptchaValidationTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest($formPostRequest, $this->internalRequestContext, true);
         $pageMarkup = (string)$response->getBody();
 
-        $formData = (new DataExtractor($pageMarkup))->getFormData();
+        $dataExtractor = new DataExtractor($pageMarkup);
+        $formData = $dataExtractor->getFormData();
         $elementData = $formData['elementData'];
 
         self::assertEquals(1, (int)$elementData['tx_form_formframework[singlestep-test-form-2][__currentPage]']['value']);
@@ -405,10 +412,8 @@ class HcaptchaValidationTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validationFailsOnSingleStepFormIfHcaptchaParametersAreInvalidDataProvider
-     */
+    #[Test]
+    #[DataProvider('validationFailsOnSingleStepFormIfHcaptchaParametersAreInvalidDataProvider')]
     public function validationFailsOnSingleStepFormIfHcaptchaParametersAreInvalid(
         array $formData,
         array $formDataNoPrefix,
@@ -425,12 +430,15 @@ class HcaptchaValidationTest extends FunctionalTestCase
         foreach ($formData as $identifier => $value) {
             $dataPusher->with($identifier, $value);
         }
+
         foreach ($formDataNoPrefix as $identifier => $value) {
             $dataPusher->withNoPrefix($identifier, $value);
         }
+
         foreach ($removeFormData as $identifier) {
             $dataPusher->without($identifier);
         }
+
         foreach ($removeFormDataNoPrefix as $identifier) {
             $dataPusher->withoutNoPrefix($identifier);
         }
@@ -440,7 +448,8 @@ class HcaptchaValidationTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest($formPostRequest, $this->internalRequestContext, true);
         $pageMarkup = (string)$response->getBody();
 
-        $formData = (new DataExtractor($pageMarkup))->getFormData();
+        $dataExtractor = new DataExtractor($pageMarkup);
+        $formData = $dataExtractor->getFormData();
         $elementData = $formData['elementData'];
 
         self::assertEquals(1, (int)$elementData['tx_form_formframework[singlestep-test-form-2][__currentPage]']['value']);
@@ -453,9 +462,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
         self::assertCount(0, $this->getMailSpoolMessages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validationSuccessfulOnSingleStepFormIfHcaptchaParametersAreValid(): void
     {
         $uri = self::ROOT_PAGE_BASE_URI . '/singlestep-test-form';
@@ -475,8 +482,6 @@ class HcaptchaValidationTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest($formPostRequest, $this->internalRequestContext, true);
         $pageMarkup = (string)$response->getBody();
 
-        $formData = (new DataExtractor($pageMarkup))->getFormData();
-        $elementData = $formData['elementData'];
         $mails = $this->getMailSpoolMessages();
 
         self::assertStringContainsString('Confirmation text', $pageMarkup);
