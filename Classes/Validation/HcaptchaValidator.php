@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the hcaptcha extension for TYPO3
- * - (c) 2021 waldhacker UG (haftungsbeschränkt)
+ * - (c) 2026 GAYA
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -16,7 +16,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Waldhacker\Hcaptcha\Validation;
+namespace GAYA\Hcaptcha\Validation;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
@@ -25,8 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
-use Waldhacker\Hcaptcha\Event\TranslateErrorMessageEvent;
-use Waldhacker\Hcaptcha\Service\ConfigurationService;
+use GAYA\Hcaptcha\Event\TranslateErrorMessageEvent;
+use GAYA\Hcaptcha\Service\ConfigurationService;
 
 class HcaptchaValidator extends AbstractValidator
 {

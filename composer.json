@@ -1,11 +1,11 @@
 {
-    "name": "dreistromland/typo3-hcaptcha",
+    "name": "gaya/typo3-hcaptcha",
     "type": "typo3-cms-extension",
     "description": "TYPO3 Extension to add hCaptcha to EXT:form - The privacy friendly captcha alternative.",
     "license": ["GPL-2.0-or-later"],
-    "homepage": "https://github.com/dreistromland/typo3-ext-hcaptcha",
+    "homepage": "https://github.com/agence-gaya/typo3-hcaptcha",
     "support": {
-        "issues": "https://github.com/dreistromland/typo3-ext-hcaptcha/issues"
+        "issues": "https://github.com/agence-gaya/typo3-hcaptcha/issues"
     },
     "authors": [
         {
@@ -18,6 +18,12 @@
             "name": "dreistrom.land AG",
             "email": "hello@dreistrom.land",
             "homepage": "https://dreistrom.land",
+            "role": "Developer"
+        },
+        {
+            "name": "GAYA",
+            "email": "tech@gaya.fr",
+            "homepage": "https://www.gaya.fr",
             "role": "Developer"
         }
     ],
@@ -50,12 +56,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Waldhacker\\Hcaptcha\\": "Classes/"
+            "GAYA\\Hcaptcha\\": "Classes/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Waldhacker\\Hcaptcha\\Tests\\": "Tests/"
+            "GAYA\\Hcaptcha\\Tests\\": "Tests/"
         }
     },
     "config": {
@@ -67,6 +73,10 @@
             "typo3/cms-composer-installers": true,
             "phpstan/extension-installer": true
         }
+    },
+    "replace": {
+        "waldhacker/hcaptcha": "*",
+        "dreistromland/typo3-hcaptcha": "*"
     },
     "scripts": {
         "post-autoload-dump": [

@@ -8,11 +8,11 @@ $GLOBALS['TYPO3_CONF_VARS'] = array_replace_recursive(
     $GLOBALS['TYPO3_CONF_VARS'],
     [
         'MAIL' => [
-            'defaultMailFromAddress' => 'hello@waldhacker.dev',
-            'defaultMailFromName' => 'waldhacker',
+            'defaultMailFromAddress' => 'tech@gaya.fr',
+            'defaultMailFromName' => 'GAYA',
             'transport' => 'mbox',
             'transport_spool_type' => 'file',
-            'transport_spool_filepath' => \Waldhacker\Hcaptcha\Tests\Functional\FunctionalTestCase::MAIL_SPOOL_FOLDER,
+            'transport_spool_filepath' => \GAYA\Hcaptcha\Tests\Functional\FunctionalTestCase::MAIL_SPOOL_FOLDER,
         ],
     ]
 );

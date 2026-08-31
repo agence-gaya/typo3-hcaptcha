@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the hcaptcha extension for TYPO3
- * - (c) 2021 waldhacker UG (haftungsbeschränkt)
+ * - (c) 2026 GAYA
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -16,14 +16,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Waldhacker\Hcaptcha\Service;
+namespace GAYA\Hcaptcha\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use Waldhacker\Hcaptcha\Exception\MissingKeyException;
+use GAYA\Hcaptcha\Exception\MissingKeyException;
 
 class ConfigurationService
 {

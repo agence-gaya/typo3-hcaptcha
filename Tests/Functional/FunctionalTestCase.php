@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the hcaptcha extension for TYPO3
- * - (c) 2021 waldhacker UG (haftungsbeschränkt)
+ * - (c) 2026 GAYA
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -16,7 +16,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Waldhacker\Hcaptcha\Tests\Functional;
+namespace GAYA\Hcaptcha\Tests\Functional;
 
 use Symfony\Component\Mailer\SentMessage;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
-use Waldhacker\Hcaptcha\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use GAYA\Hcaptcha\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use ZBateson\MailMimeParser\Message;
 
 abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase

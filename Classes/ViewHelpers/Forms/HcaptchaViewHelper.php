@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the hcaptcha extension for TYPO3
- * - (c) 2021 waldhacker UG (haftungsbeschränkt)
+ * - (c) 2026 GAYA
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -16,14 +16,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Waldhacker\Hcaptcha\ViewHelpers\Forms;
+namespace GAYA\Hcaptcha\ViewHelpers\Forms;
 
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-use Waldhacker\Hcaptcha\Service\ConfigurationService;
+use GAYA\Hcaptcha\Service\ConfigurationService;
 
 /**
  * @codeCoverageIgnore maybe test with an acceptance test at a later point

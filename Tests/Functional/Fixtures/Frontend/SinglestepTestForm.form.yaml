@@ -8,7 +8,7 @@ finishers:
     options:
       subject: 'Your message: {subject}'
       recipients:
-        recipient@waldhacker.dev: 'waldhacker'
+        tech@gaya.fr: 'GAYA'
       senderAddress: '{email}'
       senderName: '{name}'
       replyToRecipients: {  }

@@ -10,7 +10,7 @@ Installation
 
 .. code::
 
-   composer require dreistromland/typo3-hcaptcha
+   composer require gaya/typo3-hcaptcha
 
 - Activate the extension in the TYPO3 Extension Manager (TER Version)
 

@@ -97,7 +97,7 @@ TYPO3:
 
           validatorsDefinition:
             Hcaptcha:
-              implementationClassName: 'Waldhacker\Hcaptcha\Validation\HcaptchaValidator'
+              implementationClassName: 'GAYA\Hcaptcha\Validation\HcaptchaValidator'
               formEditor:
                 iconIdentifier: 'form-validator'
                 label: 'hcaptcha.formEditor.stage.validation_label'

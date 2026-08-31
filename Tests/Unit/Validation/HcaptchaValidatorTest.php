@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the hcaptcha extension for TYPO3
- * - (c) 2021 waldhacker UG (haftungsbeschränkt)
+ * - (c) 2026 GAYA
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -16,7 +16,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Waldhacker\Hcaptcha\Tests\Unit\Validation;
+namespace GAYA\Hcaptcha\Tests\Unit\Validation;
 
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
@@ -27,12 +27,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Waldhacker\Hcaptcha\Service\ConfigurationService;
-use Waldhacker\Hcaptcha\Validation\HcaptchaValidator;
+use GAYA\Hcaptcha\Service\ConfigurationService;
+use GAYA\Hcaptcha\Validation\HcaptchaValidator;
 
 /**
  * @backupGlobals enabled
- * @coversDefaultClass \Waldhacker\Hcaptcha\Validation\HcaptchaValidator
+ * @coversDefaultClass \GAYA\Hcaptcha\Validation\HcaptchaValidator
  */
 class HcaptchaValidatorTest extends TestCase
 {

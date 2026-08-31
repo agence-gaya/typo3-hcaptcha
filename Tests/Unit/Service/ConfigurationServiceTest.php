@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the hcaptcha extension for TYPO3
- * - (c) 2021 waldhacker UG (haftungsbeschränkt)
+ * - (c) 2026 GAYA
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -16,7 +16,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Waldhacker\Hcaptcha\Tests\Unit\Service;
+namespace GAYA\Hcaptcha\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -26,11 +26,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use Waldhacker\Hcaptcha\Exception\MissingKeyException;
-use Waldhacker\Hcaptcha\Service\ConfigurationService;
+use GAYA\Hcaptcha\Exception\MissingKeyException;
+use GAYA\Hcaptcha\Service\ConfigurationService;
 
 /**
- * @coversDefaultClass \Waldhacker\Hcaptcha\Service\ConfigurationService
+ * @coversDefaultClass \GAYA\Hcaptcha\Service\ConfigurationService
  */
 class ConfigurationServiceTest extends TestCase
 {

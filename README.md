@@ -1,16 +1,18 @@
 # TYPO3 Extension to add hCaptcha to EXT:form - The privacy friendly captcha alternative.
 
-[![ci](https://github.com/dreistromland/typo3-ext-hcaptcha/actions/workflows/ci.yml/badge.svg)](https://github.com/dreistromland/typo3-ext-hcaptcha/actions/workflows/ci.yml)
+[![ci](https://github.com/agence-gaya/typo3-hcaptcha/actions/workflows/ci.yml/badge.svg)](https://github.com/agence-gaya/typo3-hcaptcha/actions/workflows/ci.yml)
 [![phpstan](https://img.shields.io/badge/PHPStan-lvl%20max-blueviolet)](https://phpstan.org/)
 
-Provides [hCaptcha](https://hcaptcha.com) integration for TYPO3 EXT:form.
+Provides [hCaptcha](https://www.hcaptcha.com) integration for TYPO3 EXT:form.
 
 hCaptcha is a free to use alternative to Google reCaptcha with a bigger focus on privacy. It supports initiatives like [PrivacyPass](https://www.hcaptcha.com/privacy-pass).
 
-For more information, see [the hCaptcha website](https://hcaptcha.com).
+For more information, see [the hCaptcha website](https://www.hcaptcha.com).
 
 Additionally, hCaptcha provides earnings for solved captchas - that can be donated to
 the Wikimedia foundation automatically (which is the case for the default settings of this extension).
+
+This extension is a fork of [dreistromland/typo3-hcaptcha](https://github.com/dreistromland/typo3-hcaptcha) and previously [waldhacker/hcaptcha](https://github.com/waldhacker/ext-hcaptcha).
 
 ## Quick Setup
 
@@ -56,17 +58,4 @@ For more info see: https://docs.hcaptcha.com/faq
 
 ### Help & Support
 
-* Issues: https://github.com/dreistromland/typo3-ext-hcaptcha
-* Slack: #typo3-cms
-
-Visit our [website](https://dreistrom.land)
- or read [Susi's blog entry about hCaptcha at susi.dev](https://susi.dev/hcaptcha).
-
-### Migration from `waldhacker/hcaptcha` 2.x to `dreistromland/typo3-hcaptcha` 2.x
-
-[dreistrom.land AG](https://dreistrom.land) has taken over the maintenance of the extension. In this context, the package namespace was changed from `waldhacker/hcaptcha` to `dreistromland/typo3-hcaptcha`.
-To migrate your project to the new namespace, do something like this:
-
-```
-composer rem waldhacker/hcaptcha && composer req dreistromland/typo3-hcaptcha:^2.0
-```
+* Issues: [https://github.com/agence-gaya/typo3-hcaptcha/issues](https://github.com/agence-gaya/typo3-hcaptcha/issues)

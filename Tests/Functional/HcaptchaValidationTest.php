@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /*
  * This file is part of the hcaptcha extension for TYPO3
- * - (c) 2021 waldhacker UG (haftungsbeschränkt)
+ * - (c) 2026 GAYA
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
@@ -16,11 +16,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Waldhacker\Hcaptcha\Tests\Functional;
+namespace GAYA\Hcaptcha\Tests\Functional;
 
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use Waldhacker\Hcaptcha\Tests\Functional\Form\DataExtractor;
-use Waldhacker\Hcaptcha\Tests\Functional\Form\DataPusher;
+use GAYA\Hcaptcha\Tests\Functional\Form\DataExtractor;
+use GAYA\Hcaptcha\Tests\Functional\Form\DataPusher;
 
 class HcaptchaValidationTest extends FunctionalTestCase
 {
@@ -30,7 +30,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
             ],
             'formDataNoPrefix' => [],
@@ -47,7 +47,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
                 'hcaptcha-1' => '1',
             ],
@@ -63,7 +63,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
             ],
             'formDataNoPrefix' => [
@@ -81,7 +81,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
                 'hcaptcha-1' => '1',
             ],
@@ -148,7 +148,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
             ],
             'formDataNoPrefix' => [
@@ -163,7 +163,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
             ],
             'formDataNoPrefix' => [
@@ -237,7 +237,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
         $formPostRequest = $dataPusher
             ->with('name', 'some name')
             ->with('subject', 'some subject')
-            ->with('email', 'sender@waldhacker.dev')
+            ->with('email', 'tech@gaya.fr')
             ->with('message', 'some message')
             ->withNoPrefix('h-captcha-response', self::VALID_HCAPTCHA_RESPONSE)
             ->toPostRequest(new InternalRequest($uri));
@@ -260,7 +260,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
             ],
             'formDataNoPrefix' => [],
@@ -277,7 +277,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
                 'hcaptcha-1' => '1',
             ],
@@ -293,7 +293,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
             ],
             'formDataNoPrefix' => [
@@ -311,7 +311,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
                 'hcaptcha-1' => '1',
             ],
@@ -378,7 +378,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
             ],
             'formDataNoPrefix' => [
@@ -393,7 +393,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
             'formData' => [
                 'name' => 'some name',
                 'subject' => 'some subject',
-                'email' => 'sender@waldhacker.dev',
+                'email' => 'tech@gaya.fr',
                 'message' => 'some message',
             ],
             'formDataNoPrefix' => [
@@ -467,7 +467,7 @@ class HcaptchaValidationTest extends FunctionalTestCase
         $formPostRequest = $dataPusher
             ->with('name', 'some name')
             ->with('subject', 'some subject')
-            ->with('email', 'sender@waldhacker.dev')
+            ->with('email', 'tech@gaya.fr')
             ->with('message', 'some message')
             ->withNoPrefix('h-captcha-response', self::VALID_HCAPTCHA_RESPONSE)
             ->toPostRequest(new InternalRequest($uri));

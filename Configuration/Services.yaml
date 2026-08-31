@@ -4,9 +4,9 @@ services:
         autoconfigure: true
         public: false
 
-    Waldhacker\Hcaptcha\:
+    GAYA\Hcaptcha\:
         resource: '../Classes/*'
 
-    Waldhacker\Hcaptcha\Service\ConfigurationService:
+    GAYA\Hcaptcha\Service\ConfigurationService:
         public: true
 
