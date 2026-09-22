@@ -1,7 +1,9 @@
+[![TYPO3 14](https://img.shields.io/badge/TYPO3-14-orange.svg?style=flat-square)](https://get.typo3.org/version/14)
+[![ci](https://github.com/agence-gaya/typo3-hcaptcha/actions/workflows/ci.yml/badge.svg)](https://github.com/agence-gaya/typo3-hcaptcha/actions/workflows/ci.yml)
+[![License](https://poser.pugx.org/gaya/typo3-hcaptcha/license)](https://packagist.org/packages/gaya/typo3-hcaptcha)
+
 # TYPO3 Extension to add hCaptcha to EXT:form - The privacy friendly captcha alternative.
 
-[![ci](https://github.com/agence-gaya/typo3-hcaptcha/actions/workflows/ci.yml/badge.svg)](https://github.com/agence-gaya/typo3-hcaptcha/actions/workflows/ci.yml)
-[![phpstan](https://img.shields.io/badge/PHPStan-lvl%20max-blueviolet)](https://phpstan.org/)
 
 Provides [hCaptcha](https://www.hcaptcha.com) integration for TYPO3 EXT:form.
 
