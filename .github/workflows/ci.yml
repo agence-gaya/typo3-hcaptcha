@@ -19,6 +19,7 @@ jobs:
           php-version: ${{ matrix.php }}
           tools: composer:v2
           coverage: none
+          extensions: pdo_sqlite
 
       - name: Get composer cache directory
         id: composer-cache
@@ -32,30 +33,32 @@ jobs:
           restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-composer-
 
       - name: Install dependencies with typo3/cms-core:${{ matrix.typo3 }}
-        run: |
-          composer require typo3/cms-core:${{ matrix.typo3 }} --prefer-dist --no-progress --optimize-autoloader
+        run: composer require typo3/cms-core:${{ matrix.typo3 }} --prefer-dist --no-progress --optimize-autoloader
 
       - name: Info
         run: composer info
 
-      - name: Lint
-        run: |
-          composer run ci:lint:php
-          composer run ci:lint:yaml
+      - name: PHP Lint
+        run: composer coder:phplint --continuous-integration
 
-      - name: CGL
-        run: composer run ci:cgl:check
+      - name: TypoScript Lint
+        run: composer coder:typoscript-lint --continuous-integration
 
-      - name: Psalm
-        run: composer run ci:psalm
+      - name: YAML Lint
+        run: composer coder:yaml-lint --continuous-integration
 
-      - name: PHPStan
-        run: composer run ci:stan
+      - name: PHP CS Fixer
+        run: composer coder:php-cs-fixer --continuous-integration
 
-      #- name: Unit tests
-      #  run: |
-      #    phpdbg --version
-      #    composer run ci:tests:unit:cover
+      - name: Rector
+        if: matrix.php == '8.2'
+        run: composer coder:rector --continuous-integration
+
+      - name: Fractor
+        run: composer coder:fractor --continuous-integration
+
+      - name: Unit tests
+        run: composer coder:tests:unit --continuous-integration
 
       - name: Functional tests
-        run: composer run ci:tests:functional
+        run: composer coder:tests:functional --continuous-integration

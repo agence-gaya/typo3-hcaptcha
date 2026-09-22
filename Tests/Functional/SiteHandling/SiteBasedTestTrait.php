@@ -232,7 +232,7 @@ trait SiteBasedTestTrait
             }
 
             if ($constants !== []) {
-                $current = $current->withConstants($constants);
+                return $current->withConstants($constants);
             }
 
             return $current;

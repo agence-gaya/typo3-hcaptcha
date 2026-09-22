@@ -1,9 +1,0 @@
-includes:
-	- phpstan.baseline.neon
-parameters:
-	ignoreErrors:
-		-
-			identifier: missingType.iterableValue
-	level: max
-	paths:
-		- ../Classes

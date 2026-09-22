@@ -53,7 +53,7 @@ class ConfigurationServiceTest extends TestCase
     {
         parent::setUp();
         $this->configurationManager = $this->prophesize(ConfigurationManager::class);
-        $this->configurationManager->getConfiguration((string)Argument::cetera())->willReturn([]);
+        $this->configurationManager->getConfiguration(Argument::cetera())->willReturn([]);
     }
 
     #[Test]

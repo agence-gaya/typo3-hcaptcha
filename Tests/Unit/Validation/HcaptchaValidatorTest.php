@@ -27,10 +27,10 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[CoversClass(HcaptchaValidator::class)]
 #[CoversMethod(HcaptchaValidator::class, '__construct')]
 #[CoversMethod(HcaptchaValidator::class, 'isValid')]
-#[CoversMethod(HcaptchaValidator::class, 'validate')]
 #[CoversMethod(HcaptchaValidator::class, 'validateHcaptcha')]
 #[CoversMethod(HcaptchaValidator::class, 'getConfigurationService')]
 #[CoversMethod(HcaptchaValidator::class, 'getRequestFactory')]
@@ -69,8 +68,10 @@ class HcaptchaValidatorTest extends TestCase
     public function validateReturnsErrorIfPostResponseFieldIsEmpty(): void
     {
         $subject = $this->getMockBuilder(HcaptchaValidator::class)
+            ->setConstructorArgs([self::createStub(EventDispatcher::class)])
             ->onlyMethods(['translateErrorMessage'])
             ->getMock();
+        $subject->expects($this->once())->method('translateErrorMessage')->willReturn('Translated error');
 
         $result = $subject->validate(1);
         $errors = $result->getErrors();
@@ -117,11 +118,13 @@ class HcaptchaValidatorTest extends TestCase
         int $expectedErrorCode
     ): void {
         $subject = $this->getMockBuilder(HcaptchaValidator::class)
+            ->setConstructorArgs([self::createStub(EventDispatcher::class)])
             ->onlyMethods(['translateErrorMessage'])
             ->getMock();
+        $subject->expects($this->once())->method('translateErrorMessage')->willReturn('Translated error');
 
-        $requestFactory = $this->prophesize(RequestFactory::class);
-        GeneralUtility::addInstance(RequestFactory::class, $requestFactory->reveal());
+        $requestFactory = $this->createMock(RequestFactory::class);
+        GeneralUtility::addInstance(RequestFactory::class, $requestFactory);
         $normalizedParams = $this->prophesize(NormalizedParams::class);
         $configurationService = $this->prophesize(ConfigurationService::class);
         GeneralUtility::addInstance(ConfigurationService::class, $configurationService->reveal());
@@ -135,14 +138,14 @@ class HcaptchaValidatorTest extends TestCase
         $configurationService->getVerificationServer()->willReturn('https://example.com/siteverify');
         $configurationService->getPrivateKey()->willReturn('my_superb_key');
 
-        $requestFactory->request((string)Argument::cetera())->willReturn(
-            new Response(200, [], json_encode($responseData))
-        );
+        $requestFactory->expects($this->once())
+            ->method('request')
+            ->with('https://example.com/siteverify?secret=my_superb_key&response=verification-key-response&remoteip=127.0.0.1', 'POST')
+            ->willReturn(new Response(200, [], json_encode($responseData)));
 
         $result = $subject->validate(1);
         $errors = $result->getErrors();
 
-        $requestFactory->request('https://example.com/siteverify?secret=my_superb_key&response=verification-key-response&remoteip=127.0.0.1', 'POST')->shouldHaveBeenCalled();
         self::assertCount(1, $errors);
         self::assertSame($expectedErrorCode, $errors[0]->getCode());
     }
