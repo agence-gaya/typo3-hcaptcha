@@ -26,9 +26,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -44,18 +43,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[BackupGlobals(true)]
 class HcaptchaValidatorTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy|ServerRequestInterface
-     */
-    private $typo3request;
+    private ServerRequestInterface&Stub $typo3request;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->typo3request = $this->prophesize(ServerRequestInterface::class);
-        $GLOBALS['TYPO3_REQUEST'] = $this->typo3request->reveal();
+        $this->typo3request = self::createStub(ServerRequestInterface::class);
+        $GLOBALS['TYPO3_REQUEST'] = $this->typo3request;
     }
 
     protected function tearDown(): void
@@ -125,18 +119,20 @@ class HcaptchaValidatorTest extends TestCase
 
         $requestFactory = $this->createMock(RequestFactory::class);
         GeneralUtility::addInstance(RequestFactory::class, $requestFactory);
-        $normalizedParams = $this->prophesize(NormalizedParams::class);
-        $configurationService = $this->prophesize(ConfigurationService::class);
-        GeneralUtility::addInstance(ConfigurationService::class, $configurationService->reveal());
-        $this->typo3request->getAttribute('normalizedParams')->willReturn($normalizedParams->reveal());
+        $normalizedParams = self::createStub(NormalizedParams::class);
+        $configurationService = self::createStub(ConfigurationService::class);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
+        $this->typo3request->method('getAttribute')->willReturnMap([
+            ['normalizedParams', null, $normalizedParams],
+        ]);
 
-        $normalizedParams->getRemoteAddress()->willReturn('127.0.0.1');
-        $this->typo3request->getParsedBody()->willReturn([
+        $normalizedParams->method('getRemoteAddress')->willReturn('127.0.0.1');
+        $this->typo3request->method('getParsedBody')->willReturn([
             'h-captcha-response' => 'verification-key-response',
         ]);
 
-        $configurationService->getVerificationServer()->willReturn('https://example.com/siteverify');
-        $configurationService->getPrivateKey()->willReturn('my_superb_key');
+        $configurationService->method('getVerificationServer')->willReturn('https://example.com/siteverify');
+        $configurationService->method('getPrivateKey')->willReturn('my_superb_key');
 
         $requestFactory->expects($this->once())
             ->method('request')

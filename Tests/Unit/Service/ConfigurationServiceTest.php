@@ -23,10 +23,8 @@ use GAYA\Hcaptcha\Service\ConfigurationService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -42,18 +40,12 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 #[CoversMethod(ConfigurationService::class, 'getServerRequest')]
 class ConfigurationServiceTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ConfigurationManager|ObjectProphecy
-     */
-    private $configurationManager;
+    private ConfigurationManager&Stub $configurationManager;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->configurationManager = $this->prophesize(ConfigurationManager::class);
-        $this->configurationManager->getConfiguration(Argument::cetera())->willReturn([]);
+        $this->configurationManager = self::createStub(ConfigurationManager::class);
     }
 
     #[Test]
@@ -62,7 +54,7 @@ class ConfigurationServiceTest extends TestCase
         putenv('HCAPTCHA_PUBLIC_KEY');
 
         $this->expectException(MissingKeyException::class);
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $subject->getPublicKey();
     }
 
@@ -71,10 +63,10 @@ class ConfigurationServiceTest extends TestCase
     {
         $expectedKey = 'my_superb_key';
         $this->configurationManager
-            ->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'hcaptcha')
+            ->method('getConfiguration')
             ->willReturn(['publicKey' => $expectedKey]);
 
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $publicKey = $subject->getPublicKey();
 
         self::assertSame($expectedKey, $publicKey);
@@ -86,7 +78,7 @@ class ConfigurationServiceTest extends TestCase
         $expectedKey = 'my_superb_key';
         putenv('HCAPTCHA_PUBLIC_KEY=' . $expectedKey);
 
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $publicKey = $subject->getPublicKey();
 
         self::assertSame($expectedKey, $publicKey);
@@ -96,7 +88,7 @@ class ConfigurationServiceTest extends TestCase
     public function getPrivateKeyThrowsExceptionIfKeyNotSet(): void
     {
         $this->expectException(MissingKeyException::class);
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $subject->getPrivateKey();
     }
 
@@ -105,10 +97,10 @@ class ConfigurationServiceTest extends TestCase
     {
         $expectedKey = 'my_superb_key';
         $this->configurationManager
-            ->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'hcaptcha')
+            ->method('getConfiguration')
             ->willReturn(['privateKey' => $expectedKey]);
 
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $privateKey = $subject->getPrivateKey();
 
         self::assertSame($expectedKey, $privateKey);
@@ -120,7 +112,7 @@ class ConfigurationServiceTest extends TestCase
         $expectedKey = 'my_superb_key';
         putenv('HCAPTCHA_PRIVATE_KEY=' . $expectedKey);
 
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $privateKey = $subject->getPrivateKey();
 
         self::assertSame($expectedKey, $privateKey);
@@ -130,7 +122,7 @@ class ConfigurationServiceTest extends TestCase
     public function getVerificationServerThrowsExceptionIfKeyNotSet(): void
     {
         $this->expectException(MissingKeyException::class);
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $subject->getVerificationServer();
     }
 
@@ -139,10 +131,10 @@ class ConfigurationServiceTest extends TestCase
     {
         $expectedServer = 'https://example.com';
         $this->configurationManager
-            ->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'hcaptcha')
+            ->method('getConfiguration')
             ->willReturn(['verificationServer' => $expectedServer]);
 
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $verificationServer = $subject->getVerificationServer();
 
         self::assertSame($expectedServer, $verificationServer);
@@ -154,7 +146,7 @@ class ConfigurationServiceTest extends TestCase
         $expectedServer = 'https://example.com';
         putenv('HCAPTCHA_VERIFICATION_SERVER=' . $expectedServer);
 
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $verificationServer = $subject->getVerificationServer();
 
         self::assertSame($expectedServer, $verificationServer);
@@ -164,7 +156,7 @@ class ConfigurationServiceTest extends TestCase
     public function getApiScriptThrowsExceptionIfKeyNotSet(): void
     {
         $this->expectException(MissingKeyException::class);
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $subject->getApiScript();
     }
 
@@ -173,24 +165,19 @@ class ConfigurationServiceTest extends TestCase
     {
         $expectedScript = 'https://hcaptcha.com/1/api.js';
         $this->configurationManager
-            ->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'hcaptcha')
+            ->method('getConfiguration')
             ->willReturn(['apiScript' => $expectedScript]);
 
-        $siteLanguageProphecy = $this->prophesize(SiteLanguage::class);
+        $siteLanguage = self::createStub(SiteLanguage::class);
+        $siteLanguage->method('getLocale')->willReturn(new Locale('en'));
 
-        if (method_exists(SiteLanguage::class, 'getTwoLetterIsoCode')) {
-            $siteLanguageProphecy->getTwoLetterIsoCode()->willReturn('en');
-        } else {
-            $localeProphecy = $this->prophesize(Locale::class);
-            $siteLanguageProphecy->getLocale()->willReturn($localeProphecy);
-            $localeProphecy->getLanguageCode()->willReturn('en');
-        }
+        $request = self::createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['language', null, $siteLanguage],
+        ]);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
-        $serverRequestInterfaceProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestInterfaceProphecy->getAttribute('language')->willReturn($siteLanguageProphecy);
-        $GLOBALS['TYPO3_REQUEST'] = $serverRequestInterfaceProphecy->reveal();
-
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $apiScript = $subject->getApiScript();
 
         self::assertSame($expectedScript . '?hl=en', $apiScript);
@@ -201,10 +188,10 @@ class ConfigurationServiceTest extends TestCase
     {
         $expectedScript = 'https://hcaptcha.com/1/api.js?hl=de';
         $this->configurationManager
-            ->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'hcaptcha')
+            ->method('getConfiguration')
             ->willReturn(['apiScript' => $expectedScript]);
 
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $apiScript = $subject->getApiScript();
 
         self::assertSame($expectedScript, $apiScript);
@@ -216,21 +203,16 @@ class ConfigurationServiceTest extends TestCase
         $expectedScript = 'https://hcaptcha.com/1/api.js';
         putenv('HCAPTCHA_API_SCRIPT=' . $expectedScript);
 
-        $siteLanguageProphecy = $this->prophesize(SiteLanguage::class);
+        $siteLanguage = self::createStub(SiteLanguage::class);
+        $siteLanguage->method('getLocale')->willReturn(new Locale('en'));
 
-        if (method_exists(SiteLanguage::class, 'getTwoLetterIsoCode')) {
-            $siteLanguageProphecy->getTwoLetterIsoCode()->willReturn('en');
-        } else {
-            $localeProphecy = $this->prophesize(Locale::class);
-            $siteLanguageProphecy->getLocale()->willReturn($localeProphecy);
-            $localeProphecy->getLanguageCode()->willReturn('en');
-        }
+        $request = self::createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['language', null, $siteLanguage],
+        ]);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
-        $serverRequestInterfaceProphecy = $this->prophesize(ServerRequestInterface::class);
-        $serverRequestInterfaceProphecy->getAttribute('language')->willReturn($siteLanguageProphecy);
-        $GLOBALS['TYPO3_REQUEST'] = $serverRequestInterfaceProphecy->reveal();
-
-        $subject = new ConfigurationService($this->configurationManager->reveal());
+        $subject = new ConfigurationService($this->configurationManager);
         $apiScript = $subject->getApiScript();
 
         self::assertSame($expectedScript . '?hl=en', $apiScript);

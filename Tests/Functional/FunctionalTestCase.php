@@ -20,12 +20,13 @@ namespace GAYA\Hcaptcha\Tests\Functional;
 
 use GAYA\Hcaptcha\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use Symfony\Component\Mailer\SentMessage;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
-use ZBateson\MailMimeParser\Message;
 
 abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
@@ -139,13 +140,14 @@ abstract class FunctionalTestCase extends \TYPO3\TestingFramework\Core\Functiona
                 continue;
             }
 
-            $message = Message::from($message->toString(), false);
+            $message = $message->getOriginalMessage();
+            self::assertInstanceOf(Email::class, $message);
+            $date = $message->getDate() ?? $message->getPreparedHeaders()->get('Date')->getDateTime();
             $messages[] = [
-                'plaintext' => $message->getTextContent(),
-                //'html' => $message->getHtmlContent(),
-                'subject' => $message->getHeaderValue('Subject'),
-                'date' => new \DateTime($message->getHeaderValue('Date')),
-                'to' => $message->getHeaderValue('To'),
+                'plaintext' => $message->getTextBody(),
+                'subject' => $message->getSubject(),
+                'date' => \DateTime::createFromImmutable($date),
+                'to' => implode(', ', array_map(static fn(Address $address): string => $address->toString(), $message->getTo())),
             ];
         }
 

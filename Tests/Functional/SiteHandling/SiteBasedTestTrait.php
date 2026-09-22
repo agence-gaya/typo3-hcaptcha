@@ -19,7 +19,6 @@ namespace GAYA\Hcaptcha\Tests\Functional\SiteHandling;
 
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\InstructionInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
@@ -192,7 +191,7 @@ trait SiteBasedTestTrait
     /**
      * @todo Instruction handling should be part of Testing Framework (multiple instructions per identifier, merge in interface)
      */
-    protected function applyInstructions(InternalRequest $request, AbstractInstruction ...$instructions): InternalRequest
+    protected function applyInstructions(InternalRequest $request, InstructionInterface ...$instructions): InternalRequest
     {
         $modifiedInstructions = [];
 
@@ -211,7 +210,7 @@ trait SiteBasedTestTrait
         return $request->withInstructions($modifiedInstructions);
     }
 
-    protected function mergeInstruction(AbstractInstruction $current, AbstractInstruction $other): AbstractInstruction
+    protected function mergeInstruction(InstructionInterface $current, InstructionInterface $other): InstructionInterface
     {
         if ($current::class !== $other::class) {
             throw new \LogicException('Cannot merge different instruction types', 1565863174);
