@@ -1,13 +1,66 @@
 # Changelog
 
 
+## 14.0.1 (2026-09-23)
+
+### Tasks
+
+* Add sitekey parameter while calling siteverify entrypoint. [Benoit Chenu]
+
+* Use new hcaptcha URLs. [Benoit Chenu]
+
+* Ignore RELEASE tag in gitchangelog entries. [Benoit Chenu]
+
+* Add SECURITY tag to gitchangelog entries. [Benoit Chenu]
+
+* Update README. [Benoit Chenu]
+
+* Update LICENSE. [Benoit Chenu]
+
+* Update editorconfig. [Benoit Chenu]
+
+* Switch development requirements to gaya/typo3-coder package. [Benoit Chenu]
+
+* Compatibility for TYPO3 14. [Benoit Chenu]
+
+* Rename projet to gaya/typo3-hcaptcha. [Benoit Chenu]
+
+* Update tailor action. [Ralf Zimmermann]
+
+### Bugfixes
+
+* Update unit tests according to new testing framework API. [Benoit Chenu]
+
+### Other
+
+* Merge tag '2.3.0' into develop. [Ralf Zimmermann]
+
+  2.3.0
+
+* Merge branch 'release/2.3.0' [Ralf Zimmermann]
+
+* Merge pull request #3 from dreistromland/develop. [dreistrom.land | Ralf Zimmermann]
+
+  [TASK] Change author
+
+* Merge pull request #1 from dreistromland/develop. [dreistrom.land | Ralf Zimmermann]
+
+  [TASK] Change package namespace
+
+
 ## 2.3.0 (2025-03-10)
 
 ### Tasks
 
+* Version 2.3.0. [Ralf Zimmermann]
+
 * Update actions. [Ralf Zimmermann]
 
 * Change author. [Ralf Zimmermann]
+
+* Change package namespace. [Ralf Zimmermann]
+
+* Change repository. [Ralf Zimmermann]
 
 ### Bugfixes
 
@@ -33,18 +86,33 @@
 
   [BUGFIX] Make it valid for v13
 
+* Merge tag '2.2.0' into develop. [waldhacker1]
 
-## 2.2.0 (2024-05-28)
+  2.2.0
+
+* Merge branch 'release/2.2.0' [waldhacker1]
+
+
+## 2.2.0 (2024-02-21)
 
 ### Tasks
-
-* Change package namespace. [Ralf Zimmermann]
-
-* Change repository. [Ralf Zimmermann]
 
 * Bersion 2.2.0. [waldhacker1]
 
 * TYPO3 13 compat. [waldhacker1]
+
+### Other
+
+* Merge tag '2.1.3' into develop. [waldhacker1]
+
+  2.1.3
+
+* Merge branch 'release/2.1.3' into main. [waldhacker1]
+
+
+## 2.1.3 (2023-08-17)
+
+### Tasks
 
 * Version 2.1.3. [waldhacker1]
 
@@ -54,6 +122,19 @@
 
   * [TASK] Fix ci
 
+### Other
+
+* Merge tag '2.1.2' into develop. [waldhacker1]
+
+  2.1.2
+
+* Merge branch 'release/2.1.2' into main. [waldhacker1]
+
+
+## 2.1.2 (2023-08-16)
+
+### Tasks
+
 * Version 2.1.2. [waldhacker1]
 
 * Fix ci. [waldhacker1]
@@ -62,9 +143,47 @@
 
 * Changelog. [waldhacker1]
 
+### Security
+
+* [SECURITY] - Prohibit empty values in validator. [waldhacker1]
+
+### Other
+
+* [REVERT] TYPO3 12 LTS Compatibility #21. [waldhacker1]
+
+* Merge tag '2.1.1' into develop. [waldhacker1]
+
+  2.1.1
+
+* Merge branch 'release/2.1.1' into main. [waldhacker1]
+
+
+## 2.1.1 (2023-03-05)
+
+### Tasks
+
 * Version 2.1.1. [waldhacker1]
 
 * Chaneglog. [Ralf Zimmermann]
+
+### Bugfixes
+
+* Autoload backend configuration to support multi-site setups #15. [waldhacker1]
+
+### Other
+
+* [DOCS] Add note about clearing the cache after install #4. [waldhacker1]
+
+* Merge tag '2.1.0' into develop. [Ralf Zimmermann]
+
+  2.1.0
+
+* Merge branch 'release/2.1.0' into main. [Ralf Zimmermann]
+
+
+## 2.1.0 (2023-01-25)
+
+### Tasks
 
 * Version 2.1.0. [Ralf Zimmermann]
 
@@ -80,6 +199,31 @@
 
 * Re-add php lint. [Ralf Zimmermann]
 
+### Features
+
+* Add event to fetch custom error messages. [Dmitry Dulepov]
+
+### Other
+
+* Merge branch 'dmitryd-feature/translation-event' into develop. [Ralf Zimmermann]
+
+* Merge branch 'feature/translation-event' of github.com:dmitryd/ext-hcaptcha into dmitryd-feature/translation-event. [Ralf Zimmermann]
+
+* Merge branch 'visol-forks-feature/append-api-url-language' into develop. [Ralf Zimmermann]
+
+* Merge branch 'feature/append-api-url-language' of https://github.com/visol-forks/ext-hcaptcha into visol-forks-feature/append-api-url-language. [Ralf Zimmermann]
+
+* Merge tag '2.0.4' into develop. [waldhacker1]
+
+  2.0.4
+
+* Merge branch 'release/2.0.4' into main. [waldhacker1]
+
+
+## 2.0.4 (2022-12-01)
+
+### Tasks
+
 * Generate changelog. [waldhacker1]
 
 * Add info about hcaptcha wordings to the docs #10. [waldhacker1]
@@ -88,13 +232,62 @@
 
 * Fix license. [Ralf Zimmermann]
 
+### Other
+
+* Exclude all files/folders starting with a dot (#13) [Simon Schaufelberger]
+
+* English wording (#11) [126016]
+
+  [TASK] english wording
+
+* Merge tag '2.0.3' into develop. [waldhacker1]
+
+  2.0.3
+
+* Merge branch 'release/2.0.3' into main. [waldhacker1]
+
+
+## 2.0.3 (2022-01-21)
+
+### Tasks
+
 * Generate changelog. [waldhacker1]
 
 * Revert ext_emconf version constraints. [waldhacker1]
 
+### Other
+
+* Merge tag '2.0.2' into develop. [waldhacker1]
+
+  2.0.2
+
+* Merge branch 'release/2.0.2' into main. [waldhacker1]
+
+
+## 2.0.2 (2022-01-21)
+
+### Tasks
+
 * Generate changelog. [waldhacker1]
 
 * Bump TYPO3 version. [Ralf Zimmermann]
+
+### Bugfixes
+
+* Do not render hcaptcha if preview mode is enabled #8 (#9) [Ralf Zimmermann]
+
+### Other
+
+* Merge tag '2.0.1' into develop. [Ralf Zimmermann]
+
+  [TASK] Version 2.0.1
+
+* Merge branch 'release/2.0.1' into main. [Ralf Zimmermann]
+
+
+## 2.0.1 (2021-11-19)
+
+### Tasks
 
 * Generate changelog. [Ralf Zimmermann]
 
@@ -122,6 +315,21 @@
 
 * Move extension icon #3. [Ralf Zimmermann]
 
+### Other
+
+* Merge pull request #6 from waldhacker/feature/code-cleanup. [Ralf Zimmermann]
+
+  [TASK] code cleanup
+
+* Merge pull request #5 from waldhacker/task/move-extension-icon. [Ralf Zimmermann]
+
+  [TASK] Move extension icon #3
+
+
+## 2.0.0 (2021-07-11)
+
+### Tasks
+
 * Remove version constraint. [Susanne Moog]
 
 * Fix emconf constraint. [Susanne Moog]
@@ -135,6 +343,19 @@
 * Allow PHP 8. [Susanne Moog]
 
 * Add CI Workflows. [Susanne Moog]
+
+### Other
+
+* Merge branch 'develop' into 'main' [Ralf Zimmermann]
+
+  [TASK] TYPO3 v11 validator compatibility
+
+  See merge request waldhacker/typo3/hcaptcha!2
+
+
+## 1.1.1 (2021-07-11)
+
+### Tasks
 
 * Version bump. [Ralf Zimmermann]
 
@@ -180,6 +401,25 @@
 
 * Beautify. [Susanne Moog]
 
+### Features
+
+* Show validation error messages #1. [Ralf Zimmermann]
+
+* Dont show hcaptcha element on summary pages and emails. [Ralf Zimmermann]
+
+### Other
+
+* Merge branch 'develop' into 'main' [Susanne Moog]
+
+  Develop
+
+  See merge request waldhacker/typo3/hcaptcha!1
+
+
+## 1.0.0 (2020-10-25)
+
+### Tasks
+
 * Add .gitattributes + Changelog. [Susanne Moog]
 
 * Add documentation. [Susanne Moog]
@@ -200,121 +440,7 @@
 
 * Remove superfluous code. [Susanne Moog]
 
-### Features
-
-* Add event to fetch custom error messages. [Dmitry Dulepov]
-
-* Show validation error messages #1. [Ralf Zimmermann]
-
-* Dont show hcaptcha element on summary pages and emails. [Ralf Zimmermann]
-
-### Bugfixes
-
-* Autoload backend configuration to support multi-site setups #15. [waldhacker1]
-
-* Do not render hcaptcha if preview mode is enabled #8 (#9) [Ralf Zimmermann]
-
 ### Other
-
-* Merge pull request #1 from dreistromland/develop. [dreistrom.land | Ralf Zimmermann]
-
-  [TASK] Change package namespace
-
-* Merge tag '2.2.0' into develop. [waldhacker1]
-
-  2.2.0
-
-* Merge branch 'release/2.2.0' [waldhacker1]
-
-* Merge tag '2.1.3' into develop. [waldhacker1]
-
-  2.1.3
-
-* Merge branch 'release/2.1.3' into main. [waldhacker1]
-
-* Merge tag '2.1.2' into develop. [waldhacker1]
-
-  2.1.2
-
-* Merge branch 'release/2.1.2' into main. [waldhacker1]
-
-* [SECURITY] - Prohibit empty values in validator. [waldhacker1]
-
-* [REVERT] TYPO3 12 LTS Compatibility #21. [waldhacker1]
-
-* Merge tag '2.1.1' into develop. [waldhacker1]
-
-  2.1.1
-
-* Merge branch 'release/2.1.1' into main. [waldhacker1]
-
-* [DOCS] Add note about clearing the cache after install #4. [waldhacker1]
-
-* Merge tag '2.1.0' into develop. [Ralf Zimmermann]
-
-  2.1.0
-
-* Merge branch 'release/2.1.0' into main. [Ralf Zimmermann]
-
-* Merge branch 'dmitryd-feature/translation-event' into develop. [Ralf Zimmermann]
-
-* Merge branch 'feature/translation-event' of github.com:dmitryd/ext-hcaptcha into dmitryd-feature/translation-event. [Ralf Zimmermann]
-
-* Merge branch 'visol-forks-feature/append-api-url-language' into develop. [Ralf Zimmermann]
-
-* Merge branch 'feature/append-api-url-language' of https://github.com/visol-forks/ext-hcaptcha into visol-forks-feature/append-api-url-language. [Ralf Zimmermann]
-
-* Merge tag '2.0.4' into develop. [waldhacker1]
-
-  2.0.4
-
-* Merge branch 'release/2.0.4' into main. [waldhacker1]
-
-* Exclude all files/folders starting with a dot (#13) [Simon Schaufelberger]
-
-* English wording (#11) [126016]
-
-  [TASK] english wording
-
-* Merge tag '2.0.3' into develop. [waldhacker1]
-
-  2.0.3
-
-* Merge branch 'release/2.0.3' into main. [waldhacker1]
-
-* Merge tag '2.0.2' into develop. [waldhacker1]
-
-  2.0.2
-
-* Merge branch 'release/2.0.2' into main. [waldhacker1]
-
-* Merge tag '2.0.1' into develop. [Ralf Zimmermann]
-
-  [TASK] Version 2.0.1
-
-* Merge branch 'release/2.0.1' into main. [Ralf Zimmermann]
-
-* Merge pull request #6 from waldhacker/feature/code-cleanup. [Ralf Zimmermann]
-
-  [TASK] code cleanup
-
-* Merge pull request #5 from waldhacker/task/move-extension-icon. [Ralf Zimmermann]
-
-  [TASK] Move extension icon #3
-
-* Merge branch 'develop' into 'main' [Ralf Zimmermann]
-
-  [TASK] TYPO3 v11 validator compatibility
-
-  See merge request waldhacker/typo3/hcaptcha!2
-
-* Merge branch 'develop' into 'main' [Susanne Moog]
-
-  Develop
-
-  See merge request waldhacker/typo3/hcaptcha!1
-
-* [RELEASE] Changelog. [Susanne Moog]
 
 * Update .gitlab-ci.yml. [Susi]
 
