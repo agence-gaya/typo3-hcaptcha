@@ -91,6 +91,9 @@ section_regexps = [
     ('Bugfixes', [
         r'^\[BUGFIX\]\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
      ]),
+    ('Security', [
+        r'^\[SECURITY\]\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
+     ]),
 
     ('Other', None ## Match all lines
      ),
