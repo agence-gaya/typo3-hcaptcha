@@ -1,9 +1,9 @@
 plugin.tx_hcaptcha {
   settings {
     # cat=plugin.hcaptcha//03; type=string; label= hcaptcha api script
-    apiScript = https://hcaptcha.com/1/api.js
+    apiScript = https://js.hcaptcha.com/1/api.js
     # cat=plugin.hcaptcha//04; type=string; label= hcaptcha vérification server
-    verificationServer = https://hcaptcha.com/siteverify
+    verificationServer = https://api.hcaptcha.com/siteverify
     # cat=plugin.hcaptcha//01; type=string; label= hcaptcha public key (hcaptcha wording: "Site Key")
     publicKey = b3ac2551-431d-45f0-a5e9-c397d4054d9b
     # cat=plugin.hcaptcha//02; type=string; label= hcaptcha private key (hcaptcha wording: "Secret Key")
