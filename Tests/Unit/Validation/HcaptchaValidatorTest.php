@@ -133,10 +133,18 @@ class HcaptchaValidatorTest extends TestCase
 
         $configurationService->method('getVerificationServer')->willReturn('https://example.com/siteverify');
         $configurationService->method('getPrivateKey')->willReturn('my_superb_key');
+        $configurationService->method('getPublicKey')->willReturn('my_public_key');
 
         $requestFactory->expects($this->once())
             ->method('request')
-            ->with('https://example.com/siteverify?secret=my_superb_key&response=verification-key-response&remoteip=127.0.0.1', 'POST')
+            ->with('https://example.com/siteverify', 'POST', [
+                'form_params' => [
+                    'secret' => 'my_superb_key',
+                    'response' => 'verification-key-response',
+                    'remoteip' => '127.0.0.1',
+                    'sitekey' => 'my_public_key',
+                ],
+            ])
             ->willReturn(new Response(200, [], json_encode($responseData)));
 
         $result = $subject->validate(1);

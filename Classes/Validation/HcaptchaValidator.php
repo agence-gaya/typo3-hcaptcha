@@ -24,7 +24,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
@@ -88,20 +87,14 @@ class HcaptchaValidator extends AbstractValidator
             $ip = $normalizedParams->getRemoteAddress();
         }
 
-        $url = HttpUtility::buildUrl(
-            [
-                'host' => $this->getConfigurationService()->getVerificationServer(),
-                'query' => http_build_query(
-                    [
-                        'secret' => $this->getConfigurationService()->getPrivateKey(),
-                        'response' => $hcaptchaFormFieldValue,
-                        'remoteip' => $ip,
-                    ]
-                ),
-            ]
-        );
-
-        $response = $this->getRequestFactory()->request($url, 'POST');
+        $response = $this->getRequestFactory()->request($this->getConfigurationService()->getVerificationServer(), 'POST', [
+            'form_params' => [
+                'secret' => $this->getConfigurationService()->getPrivateKey(),
+                'response' => $hcaptchaFormFieldValue,
+                'remoteip' => $ip,
+                'sitekey' => $this->getConfigurationService()->getPublicKey(),
+            ],
+        ]);
 
         $body = (string)$response->getBody();
         $responseArray = json_decode($body, true);
